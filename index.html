@@ -1,0 +1,17 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-firestore.js"></script>
+  <script src="./index.js"></script>
+  <title>chat chat</title>
+</head>
+<body>
+  <button onclick="createChannel()">Create Channel/Room</button>
+  <button onclick="joinChannel()">Join Channel/Room</button>
+  <div id="msgBody"></div>
+  <input type="text" id="sendMessage"/>
+  <button onclick="sendMessage()">send</button>
+</body>
+</html>
