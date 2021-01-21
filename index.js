@@ -17,6 +17,11 @@ const configuration = {
 };
 const createConnection = () => {
   connection = new RTCPeerConnection(configuration)
+  connection.ontrack = event => {
+    event.streams[0].getTracks().forEach(track => {
+      remoteStream.addTrack(track);
+    });
+  }
   connection.onicecandidate = async e =>  {
     console.log(" NEW ice candidate!! on localconnection reprinting SDP " );
     if (currentRoomId && e.candidate) {
@@ -45,10 +50,14 @@ const openUserMedia = async () => {
   localStream = stream;
   remoteStream = new MediaStream();
   document.querySelector('#remoteVideo').srcObject = remoteStream;
+  localStream.getTracks().forEach(track => {
+    console.log('adding track in connection');
+    connection.addTrack(track, localStream);
+  });
 }
 
 const createChannel = async () => {
-  // openUserMedia();
+  await openUserMedia();
   const sendChannel = connection.createDataChannel("sendChannel");
   sendChannel.onmessage = e => {
     const node = document.createElement('div');
@@ -74,31 +83,29 @@ const createChannel = async () => {
     }
   });
   connection.setLocalDescription(offer)
+
   const roomId = roomRef.id;
   currentRoomId = roomId;
-  console.log('room id ', roomId )
+  document.getElementById('link').innerText = window.location.href + `?roomId=${roomId}`;
   rooms = {
     [roomId]: sendChannel
   };
   roomRef.onSnapshot(async snapshot => {
-    console.log('Got updated room:', snapshot.data());
     const data = snapshot.data();
     if (!connection.currentRemoteDescription && data && data.answer) {
         const answer = new RTCSessionDescription(data.answer)
         await connection.setRemoteDescription(answer);
-        console.log('set answer');
     }
     if ( data && data.recieverCandidate) {
-      console.log(' i am sender, setting reciever candidate', data.recieverCandidate);
       const candidate = new RTCIceCandidate(data.recieverCandidate);
       await connection.addIceCandidate(candidate);
-      console.log('added candidate in sender');
     }
   });
 }
 
 const joinChannel =  async () => {
   isSender = false;
+  await openUserMedia();
   connection.ondatachannel = e => {
     const receiveChannel = e.channel;
     receiveChannel.onmessage =e => {
@@ -111,7 +118,7 @@ const joinChannel =  async () => {
     connection.channel = receiveChannel;
 
   }
-  const roomId = window.prompt('roomId?');
+  const roomId = window.location.search.split('=')[1];
   currentRoomId = roomId;
   const roomRef = db.collection('rooms').doc(`${roomId}`);
   const roomSnapshot = await roomRef.get();
@@ -131,11 +138,9 @@ const joinChannel =  async () => {
   }
   roomRef.onSnapshot(async snapshot => {
     const data = snapshot.data();
-    if (data.senderCandidate) {
-      console.log(' i am reciever, setting sender candidate ', data.senderCandidate);
+    if (data && data.senderCandidate) {
       const candidate = new RTCIceCandidate(data.senderCandidate);
       await connection.addIceCandidate(candidate);
-      console.log('added candidate in reciever');
     }
   });
 }
@@ -174,5 +179,6 @@ const initDbConnection = () => {
 
 (function () {
   createConnection();
-  initDbConnection()
+  initDbConnection();
+  window.location.search.split('=')[1] && joinChannel();
 })();

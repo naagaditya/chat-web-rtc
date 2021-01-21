@@ -9,11 +9,11 @@
 </head>
 <body>
   <button onclick="createChannel()">Create Channel/Room</button>
-  <button onclick="joinChannel()">Join Channel/Room</button>
+  <div id="link"></div>
   <div id="msgBody"></div>
   <input type="text" id="sendMessage"/>
   <button onclick="sendMessage()">send</button>
-  <video id="localVideo" autoplay></video>
-  <video id="remoteVideo"></video>
+  <video id="localVideo" muted autoplay playsinlin></video>
+  <video id="remoteVideo" autoplay playsinlin></video>
 </body>
 </html>
