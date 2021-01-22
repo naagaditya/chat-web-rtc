@@ -5,15 +5,7 @@ let db;
 let currentRoomId;
 let localStream, remoteStream;
 const configuration = {
-  iceServers: [
-    {
-      urls: [
-        'stun:stun1.l.google.com:19302',
-        'stun:stun2.l.google.com:19302',
-      ],
-    },
-  ],
-  iceCandidatePoolSize: 10,
+  iceServers: [{ urls: 'stun:stun2.1.google.com:19302' }]
 };
 const createConnection = () => {
   connection = new RTCPeerConnection(configuration)
