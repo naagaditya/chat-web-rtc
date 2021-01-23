@@ -5,7 +5,7 @@ let db;
 let currentRoomId;
 let localStream, remoteStream;
 const configuration = {
-  iceServers: [{ urls: 'stun:stun2.1.google.com:19302' }]
+  iceServers: [{ urls: 'stun.voip.aebc.com' }]
 };
 const createConnection = () => {
   connection = new RTCPeerConnection(configuration)
