@@ -5,7 +5,11 @@ let db;
 let currentRoomId;
 let localStream, remoteStream;
 const configuration = {
-  iceServers: [{ urls: 'stun:sip1.lakedestiny.cordiaip.com' }]
+  iceServers: [{
+                          urls: "stun:stun.services.mozilla.com",
+                          username: "louis@mozilla.com",
+                          credential: "webrtcdemo"
+                      }]
 };
 const createConnection = () => {
   connection = new RTCPeerConnection(configuration)
