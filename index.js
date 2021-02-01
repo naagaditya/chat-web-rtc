@@ -6,17 +6,17 @@ let currentRoomId;
 let localStream, remoteStream;
 const configuration = {
   iceServers: [
-            {
-                urls: "stun:numb.viagenie.ca",
-                username: "sultan1640@gmail.com",
-                credential: "98376683"
-            },
-            {
-                urls: "turn:numb.viagenie.ca",
-                username: "sultan1640@gmail.com",
-                credential: "98376683"
-            }
-        ]
+    {
+      urls: "stun:numb.viagenie.ca",
+      username: "sultan1640@gmail.com",
+      credential: "98376683"
+    },
+    {
+      urls: "turn:numb.viagenie.ca",
+      username: "sultan1640@gmail.com",
+      credential: "98376683"
+    }
+  ]
 };
 const createConnection = () => {
   connection = new RTCPeerConnection(configuration)
@@ -26,7 +26,7 @@ const createConnection = () => {
     });
   }
   connection.onicecandidate = async e =>  {
-    console.log(" NEW ice candidate!! on localconnection reprinting SDP " );
+    console.log(" NEW ice candidate!! " );
     if (currentRoomId && e.candidate) {
       const roomRef = db.collection('rooms').doc(`${currentRoomId}`);
       let roomWithCandidate;
@@ -42,6 +42,7 @@ const createConnection = () => {
       }
       
       await roomRef.update(roomWithCandidate);
+      console.log('send candidate to peer');
     }
   }
 }
@@ -86,6 +87,7 @@ const createChannel = async () => {
     }
   });
   connection.setLocalDescription(offer)
+  console.log('step 1: offer created and updated');
 
   const roomId = roomRef.id;
   currentRoomId = roomId;
@@ -96,12 +98,14 @@ const createChannel = async () => {
   roomRef.onSnapshot(async snapshot => {
     const data = snapshot.data();
     if (!connection.currentRemoteDescription && data && data.answer) {
-        const answer = new RTCSessionDescription(data.answer)
+        const answer = new RTCSessionDescription(data.answer);
         await connection.setRemoteDescription(answer);
+        console.log('Step 3: Got the answer and set the answer');
     }
     if ( data && data.recieverCandidate) {
       const candidate = new RTCIceCandidate(data.recieverCandidate);
       await connection.addIceCandidate(candidate);
+      console.log('recieve candidate and added');
     }
   });
 }
@@ -130,7 +134,7 @@ const joinChannel =  async () => {
     await connection.setRemoteDescription(offer);
     const answer = await connection.createAnswer()
     await connection.setLocalDescription(answer);
-
+    console.log('step 2: set offer created answer and updated answer');
     const roomWithAnswer = {
         answer: {
             type: answer.type,
@@ -144,6 +148,7 @@ const joinChannel =  async () => {
     if (data && data.senderCandidate) {
       const candidate = new RTCIceCandidate(data.senderCandidate);
       await connection.addIceCandidate(candidate);
+      console.log('recieve candidate and added');
     }
   });
 }
