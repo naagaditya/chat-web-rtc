@@ -6,11 +6,17 @@ let currentRoomId;
 let localStream, remoteStream;
 const configuration = {
   iceServers: [
-  {
-url: 'turn:numb.viagenie.ca',
-credential: 'muazkh',
-username: 'webrtc@live.com'
-},{url:'stun:stun.ekiga.net'}]
+            {
+                urls: "stun:numb.viagenie.ca",
+                username: "sultan1640@gmail.com",
+                credential: "98376683"
+            },
+            {
+                urls: "turn:numb.viagenie.ca",
+                username: "sultan1640@gmail.com",
+                credential: "98376683"
+            }
+        ]
 };
 const createConnection = () => {
   connection = new RTCPeerConnection(configuration)
