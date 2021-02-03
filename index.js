@@ -45,8 +45,8 @@ const createConnection = () => {
       console.log('send candidate to peer');
     }
   }
+  connection.onicecandidateerror = (e) => {console.log(e.errorText)}
 }
-connection.onicecandidateerror = (e) => {console.log(e.errorText)}
 
 const openUserMedia = async () => {
   const stream = await navigator.mediaDevices.getUserMedia(
