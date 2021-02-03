@@ -46,6 +46,7 @@ const createConnection = () => {
     }
   }
 }
+connection.onicecandidateerror = (e) => {console.log(e.errorText)}
 
 const openUserMedia = async () => {
   const stream = await navigator.mediaDevices.getUserMedia(
