@@ -8,13 +8,13 @@ const configuration = {
   iceServers: [
     {
       urls: "stun:numb.viagenie.ca",
-      username: "sultan1640@gmail.com",
-      credential: "98376683"
+      username: "adityanaag91@gmail.com",
+      credential: "aditya@123"
     },
     {
       urls: "turn:numb.viagenie.ca",
-      username: "sultan1640@gmail.com",
-      credential: "98376683"
+      username: "adityanaag91@gmail.com",
+      credential: "aditya@123"
     }
   ]
 };
