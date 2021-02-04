@@ -8,16 +8,20 @@ const configuration = {
   iceServers: [
     {
       urls: "stun:numb.viagenie.ca",
-      username: "adityanaag91@gmail.com",
-      credential: "aditya@123"
+      username: "sultan1640@gmail.com",
+      credential: "98376683"
     },
     {
       urls: "turn:numb.viagenie.ca",
-      username: "adityanaag91@gmail.com",
-      credential: "aditya@123"
+      username: "sultan1640@gmail.com",
+      credential: "98376683"
     }
   ]
 };
+/**
+ create connection for both client and server
+ 
+ */
 const createConnection = () => {
   connection = new RTCPeerConnection(configuration)
   connection.ontrack = event => {
@@ -132,7 +136,8 @@ const joinChannel =  async () => {
   const roomSnapshot = await roomRef.get();
   if (roomSnapshot.exists) {
     const offer = roomSnapshot.data().offer;
-    await connection.setRemoteDescription(offer);
+    const remoteOffer = new RTCSessionDescription(offer);
+    await connection.setRemoteDescription(remoteOffer);
     const answer = await connection.createAnswer()
     await connection.setLocalDescription(answer);
     console.log('step 2: set offer created answer and updated answer');
