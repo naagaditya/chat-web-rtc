@@ -18,9 +18,8 @@ const createConnection = () => {
     });
   }
   connection.onicecandidate = async e =>  {
-    console.log(" NEW ice candidate!! " );
+    console.log(" NEW ice candidate!! ", e, e.candidate );
     if (currentRoomId && e.candidate) {
-      console.log(e.candidate.toJSON());
       const roomRef = db.collection('rooms').doc(`${currentRoomId}`);
       let roomWithCandidate;
       if (isSender) {
