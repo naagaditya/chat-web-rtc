@@ -4,7 +4,7 @@ let isSender = true;
 let db;
 let currentRoomId;
 let localStream, remoteStream;
-const configuration = {"rtcpMuxPolicy":"require","bundlePolicy":"max-bundle","iceServers":[{"urls":["stun:turn2.l.google.com"]}],"certificates":[{}]};
+const configuration = {"rtcpMuxPolicy":"require","bundlePolicy":"max-bundle","iceServers":[{"urls":["stun:turn2.l.google.com"]}]};
 const constraints = {"optional":[]};
 /**
  create connection for both client and server
