@@ -19,7 +19,7 @@ const createConnection = () => {
   }
   connection.onicecandidate = async e =>  {
     console.log(" NEW ice candidate!! ", e.candidate );
-    if (currentRoomId && e.candidate && e.candidate.protocol === 'udp') {
+    if (currentRoomId && e.candidate && e.candidate.protocol === 'udp' && e.candidate.type === 'srflx') {
       const roomRef = db.collection('rooms').doc(`${currentRoomId}`);
       let roomWithCandidate;
       if (isSender) {
