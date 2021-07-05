@@ -20,6 +20,7 @@ const createConnection = () => {
   connection.onicecandidate = async e =>  {
     console.log(" NEW ice candidate!! " );
     if (currentRoomId && e.candidate) {
+      console.log(e.candidate.toJSON());
       const roomRef = db.collection('rooms').doc(`${currentRoomId}`);
       let roomWithCandidate;
       if (isSender) {
@@ -33,7 +34,7 @@ const createConnection = () => {
         }
       }
       
-      await roomRef.set(roomWithCandidate);
+      await roomRef.update(roomWithCandidate);
       console.log('send candidate to peer');
     }
   }
@@ -135,7 +136,7 @@ const joinChannel =  async () => {
             sdp: answer.sdp
         }
     }
-    await roomRef.set(roomWithAnswer);
+    await roomRef.update(roomWithAnswer);
   }
   roomRef.onSnapshot(async snapshot => {
     const data = snapshot.data();
