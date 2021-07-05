@@ -33,7 +33,7 @@ const createConnection = () => {
         }
       }
       
-      await roomRef.update(roomWithCandidate);
+      await roomRef.set(roomWithCandidate);
       console.log('send candidate to peer');
     }
   }
@@ -135,7 +135,7 @@ const joinChannel =  async () => {
             sdp: answer.sdp
         }
     }
-    await roomRef.update(roomWithAnswer);
+    await roomRef.set(roomWithAnswer);
   }
   roomRef.onSnapshot(async snapshot => {
     const data = snapshot.data();
