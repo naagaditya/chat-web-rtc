@@ -6,14 +6,12 @@ let currentRoomId;
 let localStream, remoteStream;
 const configuration = {
   iceServers: [
-    {url: "stun:stun4.l.google.com:19302"},
-
     {
-      urls: "turn:numb.viagenie.ca",
-      username: "adityanaag91@gmail.com",
-      credential: "aditya@123"
+        "urls": [
+            "stun:turn2.l.google.com"
+        ]
     }
-  ]
+]
 };
 /**
  create connection for both client and server
