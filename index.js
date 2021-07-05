@@ -4,21 +4,14 @@ let isSender = true;
 let db;
 let currentRoomId;
 let localStream, remoteStream;
-const configuration = {
-  iceServers: [
-    {
-        "urls": [
-            "stun:turn2.l.google.com"
-        ]
-    }
-]
-};
+const configuration = {"rtcpMuxPolicy":"require","bundlePolicy":"max-bundle","iceServers":[{"urls":["stun:turn2.l.google.com"]}],"certificates":[{}]};
+const constraints = {"optional":[]};
 /**
  create connection for both client and server
  
  */
 const createConnection = () => {
-  connection = new RTCPeerConnection(configuration)
+  connection = new RTCPeerConnection(configuration, constraints);
   connection.ontrack = event => {
     event.streams[0].getTracks().forEach(track => {
       remoteStream.addTrack(track);
